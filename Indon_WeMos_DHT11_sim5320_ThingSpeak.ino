@@ -4,7 +4,7 @@
 #include <ThingSpeak.h>
 
 // USER SETTINGS
-const unsigned int LOGINTERVAL = 3000; //in milliseconds
+const unsigned int LOGINTERVAL = 10000; //in milliseconds
 String myMobileNum = "97974063"; //no need international code in front, just use local number
 unsigned long myChannelNumber = 428538; //from own Thingspeak account
 const char*  myWriteAPIKey = "1N312W3GMY8D2N6R"; //from own Thingspeak account
@@ -29,10 +29,11 @@ unsigned long lastLoggedTime;
 void setup() {
 
   Serial.begin(115200);
-  fonaSerial->begin(9600);
+  fonaSerial->begin(115200);
 
   fonaSS.println(F("AT+IPR=9600"));  // Set baud to 9600
   delay(100); // Let the command run
+  fonaSerial->begin(9600);
   
   if (! fona.begin(*fonaSerial)) {
     Serial.println(F("Couldn't find FONA"));
@@ -54,9 +55,9 @@ void setup() {
 
 void loop() { //choose only one of the following, comment out the others
     
-  run_menu();
+//  run_menu();
 
-//  send_dht_thingspeak();
+  send_dht_thingspeak();
 
 //  send_gps_thingspeak();
 }

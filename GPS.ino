@@ -33,7 +33,7 @@ void send_gps_thingspeak() {
   if (millis() - lastLoggedTime > LOGINTERVAL) {
     get_a_gps_reading();
     Serial.println(F("Sending a GPS reading via ThingSpeak ... "));
-    send_thingspeak(gps_lat, gps_lon);
+    send_thingspeak_3g(gps_lat, gps_lon);
     lastLoggedTime = millis();
   }
 }

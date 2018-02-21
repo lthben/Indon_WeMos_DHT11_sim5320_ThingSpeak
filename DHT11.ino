@@ -26,7 +26,7 @@ void send_dht_thingspeak() {
   if (millis() - lastLoggedTime > LOGINTERVAL) {
     get_a_dht_reading();
     Serial.println(F("Sending a DHT11 reading via ThingSpeak ... "));
-    send_thingspeak(dht_temp, dht_humid);
+    send_thingspeak_3g(dht_temp, dht_humid);
     lastLoggedTime = millis();
   }
 }

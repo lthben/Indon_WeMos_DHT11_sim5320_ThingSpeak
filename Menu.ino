@@ -68,7 +68,7 @@ void run_menu() {
         //Send a dht11 reading via Thingspeak
         get_a_dht_reading();
         Serial.println(F("Sending a DHT11 reading via ThingSpeak ..."));
-        send_thingspeak(dht_temp, dht_humid);
+        send_thingspeak_3g(dht_temp, dht_humid);
         break;
       }
 
@@ -76,7 +76,7 @@ void run_menu() {
         //Send a gps reading via Thingspeak
         get_a_gps_reading();
         Serial.println(F("Sending a GPS reading via ThingSpeak ..."));
-        send_thingspeak(gps_lat, gps_lon);
+        send_thingspeak_3g(gps_lat, gps_lon);
         break;
       }
 
