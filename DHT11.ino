@@ -21,7 +21,7 @@ String get_a_dht_reading() { //do not run more often than once every few seconds
   return myString;
 }
 
-void send_dht_thingspeak() {
+void send_thingspeak_continuously() {
   //Send dht11 readings continuously via Thingspeak
   if (millis() - lastLoggedTime > LOGINTERVAL) {
     get_a_dht_reading();

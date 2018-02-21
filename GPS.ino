@@ -19,8 +19,9 @@ String get_a_gps_reading() { //do not run more often than once every few seconds
     String latlon = String(gps_lat, 6) + "," + String(gps_lon, 6);
 
     //    String speedKPH = String(2.0 * speed_kph, 2);
-    //    String myString = "date: " + String(rtc_date, 0) + " time: " + String(rtc_time, 0) + " " + googleMapsQueryString + String(gps_lat, 6) + "," + String(gps_lon, 6);
+        String myString = "date: " + String(rtc_date, 0) + " time: " + String(rtc_time, 0) + " " + googleMapsQueryString + String(gps_lat, 6) + "," + String(gps_lon, 6);
 
+    Serial.println(myString);
     return latlon;
 
   } else {
@@ -28,12 +29,4 @@ String get_a_gps_reading() { //do not run more often than once every few seconds
   }
 }
 
-void send_gps_thingspeak() {
-  //Send gps readings continuously via Thingspeak
-  if (millis() - lastLoggedTime > LOGINTERVAL) {
-    get_a_gps_reading();
-    Serial.println(F("Sending a GPS reading via ThingSpeak ... "));
-    send_thingspeak_3g(gps_lat, gps_lon);
-    lastLoggedTime = millis();
-  }
-}
+

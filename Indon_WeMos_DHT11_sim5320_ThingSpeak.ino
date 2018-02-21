@@ -7,7 +7,9 @@
 const unsigned int LOGINTERVAL = 10000; //in milliseconds
 String myMobileNum = "97974063"; //no need international code in front, just use local number
 unsigned long myChannelNumber = 428538; //from own Thingspeak account
-const char*  myWriteAPIKey = "1N312W3GMY8D2N6R"; //from own Thingspeak account
+const char*  myWriteAPIKey = "1N312W3GMY8D2N6R"; //from own ThingSpeak account
+const char* myReadAPIKey = "QW1BLEZSOOEJB9AD";//from own ThingSpeak account
+int whichField = 1;//which ThingSpeak field to read from 
 
 #define FONA_RX D6
 #define FONA_TX D7
@@ -26,15 +28,15 @@ DHT dht(DHTPIN, DHTTYPE);
 uint8_t readline(char *buff, uint8_t maxbuff, uint16_t timeout = 0);
 unsigned long lastLoggedTime;
 
+int typeOfDataToSend = 0; //0 for DHT data, 1 for GPS data
+float cloudDataValue; //downloaded the latest data value from a ThingSpeak channel and field 
+
 void setup() {
 
   Serial.begin(115200);
-  fonaSerial->begin(115200);
 
-  fonaSS.println(F("AT+IPR=9600"));  // Set baud to 9600
-  delay(100); // Let the command run
-  fonaSerial->begin(9600);
-  
+  initializeGSM();
+
   if (! fona.begin(*fonaSerial)) {
     Serial.println(F("Couldn't find FONA"));
     while (1);
@@ -48,18 +50,14 @@ void setup() {
   delay(1000);
   Serial.println("DHT Ready");
 
-  //  ThingSpeak.begin(client); //need to change to GPRS settings
-
   print_menu();
 }
 
-void loop() { //choose only one of the following, comment out the others
-    
-//  run_menu();
+void loop() { //choose only one of the following, comment out the other
 
-  send_dht_thingspeak();
+  run_menu();
 
-//  send_gps_thingspeak();
+  //send_thingspeak_continuously(); //sends DHT data every LOGINTERVAL milliseconds
 }
 
 

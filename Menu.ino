@@ -7,19 +7,13 @@ void print_menu() {
   Serial.println(F("[1] Send a gps reading via sms"));
   Serial.println(F("[2] Send a dht11 reading via Thingspeak"));
   Serial.println(F("[3] Send a gps reading via Thingspeak"));
+  Serial.println(F("[4] Read the latest data point from a ThingSpeak channel and field"));
 
   // SMS
   Serial.println(F("[s] Send SMS"));
 
   // Time
   Serial.println(F("[t] Get network time"));
-
-  // GPRS
-  //  Serial.println(F("[G] Enable GPRS"));
-  //  Serial.println(F("[g] Disable GPRS"));
-  //  Serial.println(F("[l] Query GSMLOC (GPRS)"));
-  //  Serial.println(F("[w] Read webpage (GPRS)"));
-  //  Serial.println(F("[W] Post to website (GPRS)"));
 
   // GPS
   Serial.println(F("[O] Turn GPS on"));
@@ -31,7 +25,9 @@ void print_menu() {
 }
 
 void run_menu() {
+
   Serial.print(F("FONA> "));
+
   while (! Serial.available() ) {
     if (fona.available()) {
       Serial.write(fona.read());
@@ -42,6 +38,7 @@ void run_menu() {
   Serial.println(command);
 
   switch (command) {
+
     case '?': {
         print_menu();
         break;
@@ -68,6 +65,7 @@ void run_menu() {
         //Send a dht11 reading via Thingspeak
         get_a_dht_reading();
         Serial.println(F("Sending a DHT11 reading via ThingSpeak ..."));
+        typeOfDataToSend = 0;
         send_thingspeak_3g(dht_temp, dht_humid);
         break;
       }
@@ -76,9 +74,16 @@ void run_menu() {
         //Send a gps reading via Thingspeak
         get_a_gps_reading();
         Serial.println(F("Sending a GPS reading via ThingSpeak ..."));
+        typeOfDataToSend = 1;
         send_thingspeak_3g(gps_lat, gps_lon);
         break;
       }
+
+     case '4': {
+        Serial.println(F("Reading the latest data point from a ThingSpeak channel and field ..."));
+        read_cloud_data();
+        break;
+     }
 
     /*** SMS ***/
 
@@ -144,7 +149,7 @@ void run_menu() {
         char gpsdata[120];
         fona.getGPS(0, gpsdata, 120);
         //        if (type == FONA808_V1)
-        Serial.println(F("Reply in format: longitude, latitude, UTC date(yyyymmdd), UTC time(HHMMSS), altitude, speed, course"));
+        Serial.println(F("Reply in format: longitude, latitude, UTC date(ddmmyy), UTC time(HHMMSS), altitude, speed, course"));
         //        else
         //          Serial.println(F("Reply in format: mode,fixstatus,utctime(yyyymmddHHMMSS),latitude,longitude,altitude,speed,course,fixmode,reserved1,HDOP,PDOP,VDOP,reserved2,view_satellites,used_satellites,reserved3,C/N0max,HPA,VPA"));
         Serial.println(gpsdata);
